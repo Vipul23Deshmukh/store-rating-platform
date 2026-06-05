@@ -1,0 +1,1054 @@
+{
+	"info": {
+		"_postman_id": "c1f72d5b-166f-40c2-b91c-770ff9a7c8be",
+		"name": "Store Rating Platform API",
+		"description": "Postman Collection to test all endpoints of the Store Rating Platform. Includes Authentication, Users management, Store management, Ratings, Owner Dashboard, and Admin Dashboard. Make sure to set the environment variables `baseUrl` (e.g. `http://localhost:3000/api`) and `token`.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Alice Cooper Customer\",\n  \"email\": \"alice@customer.com\",\n  \"password\": \"Customer@123\",\n  \"address\": \"456 Residential Way, Suite 10, CA 90210\",\n  \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registers a new user on the platform. Change role to 'STORE_OWNER' to test owner capabilities."
+					},
+					"response": []
+				},
+				{
+					"name": "User Login (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.accessToken) {",
+									"    pm.globals.set(\"token\", jsonData.accessToken);",
+									"    pm.globals.set(\"role\", \"ADMIN\");",
+									"    console.log(\"Token extracted and set as global variable for ADMIN\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@storerating.com\",\n  \"password\": \"Admin@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs in the System Administrator and dynamically stores the JWT token."
+					},
+					"response": []
+				},
+				{
+					"name": "User Login (Owner)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.accessToken) {",
+									"    pm.globals.set(\"token\", jsonData.accessToken);",
+									"    pm.globals.set(\"role\", \"STORE_OWNER\");",
+									"    console.log(\"Token extracted and set as global variable for OWNER\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"owner@storerating.com\",\n  \"password\": \"Owner@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs in the Store Owner and dynamically stores the JWT token."
+					},
+					"response": []
+				},
+				{
+					"name": "User Login (Normal User)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.accessToken) {",
+									"    pm.globals.set(\"token\", jsonData.accessToken);",
+									"    pm.globals.set(\"role\", \"USER\");",
+									"    console.log(\"Token extracted and set as global variable for USER\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@storerating.com\",\n  \"password\": \"User@12345\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs in the Normal Customer and dynamically stores the JWT token."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile Info (Me)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						},
+						"description": "Retrieves the currently authenticated user's details."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Jane Updated Doe\",\n  \"email\": \"user@storerating.com\",\n  \"address\": \"789 Updated Main Street, Residential Sector, TX 75001\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						},
+						"description": "Updates the profile details (name, email, address) of the currently logged-in user."
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oldPassword\": \"User@12345\",\n  \"newPassword\": \"User@54321\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/change-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"change-password"
+							]
+						},
+						"description": "Updates password credentials. (Be careful to update login passwords afterwards)."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints relating to user identity, tokens, profile modification and password lifecycle."
+		},
+		{
+			"name": "2. Users (Admin Only)",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users?page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								},
+								{
+									"key": "role",
+									"value": "USER",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "Jane",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Returns a paginated list of all users. Accessible to ADMIN only."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert a User ID"
+								}
+							]
+						},
+						"description": "Retrieves comprehensive details about a user. Accessible to ADMIN only."
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Bob Vance AdminCreated\",\n  \"email\": \"bob.vance@refrigerator.com\",\n  \"password\": \"Vance@123\",\n  \"address\": \"Scranton Business Park, PA 18501\",\n  \"role\": \"STORE_OWNER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Enables administrators to create accounts directly, bypassing public registration."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Bob Vance Vance Refrigeration\",\n  \"address\": \"Scranton Business Park, Unit 3, PA 18501\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert a User ID"
+								}
+							]
+						},
+						"description": "Allows administrators to edit user profiles and roles."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert User ID to Delete"
+								}
+							]
+						},
+						"description": "Allows administrators to remove users from the platform."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Stores",
+			"item": [
+				{
+					"name": "List Stores",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/stores?page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stores"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								},
+								{
+									"key": "search",
+									"value": "Bistro",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "Gourmet",
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": "NY",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves stores with searching, sorting, and pagination. Embeds user rating."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Store Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/stores/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stores",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert Store ID"
+								}
+							]
+						},
+						"description": "Retrieves comprehensive information on a store, including customer reviews and dynamic average calculations."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Imperial Bakery\",\n  \"email\": \"imperialbakery@stores.com\",\n  \"address\": \"444 Baker Street, Pastry Quarter, Chicago, IL 60611\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stores",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stores"
+							]
+						},
+						"description": "Registers a new store in the system. Accessible to ADMIN and STORE_OWNER only."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Imperial Bakery & Cafe\",\n  \"address\": \"444 Baker Street, Suite B, Chicago, IL 60611\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stores/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stores",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert Store ID to Update"
+								}
+							]
+						},
+						"description": "Modifies store parameters. Accessible to ADMIN and STORE_OWNER owner."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/stores/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stores",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert Store ID to Delete"
+								}
+							]
+						},
+						"description": "Deletes a store. Accessible to ADMIN only."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Ratings & Reviews",
+			"item": [
+				{
+					"name": "Submit Store Rating (Upsert)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storeId\": \"\",\n  \"value\": 5,\n  \"comment\": \"Exceptional service! Will definitely recommend.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ratings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings"
+							]
+						},
+						"description": "Submits a rating. If the user already rated the store, it acts as an update (upsert). Accessible to USER role only."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Rating (By Rating ID)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": 4,\n  \"comment\": \"Updating to 4 stars. Service got a bit slower.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ratings/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert Rating ID"
+								}
+							]
+						},
+						"description": "Updates a specific rating. Only the author can update their rating."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Store Ratings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/ratings/store/:storeId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings",
+								"store",
+								":storeId"
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": "",
+									"description": "Insert Store ID"
+								}
+							]
+						},
+						"description": "Gets all reviews and ratings submitted for a specific store."
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Store Rating",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/ratings/my-rating/:storeId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings",
+								"my-rating",
+								":storeId"
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": "",
+									"description": "Insert Store ID"
+								}
+							]
+						},
+						"description": "Gets the current user's rating submission for a specific store."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Rating (Admin Only)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/ratings/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ratings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Insert Rating ID to Delete"
+								}
+							]
+						},
+						"description": "Allows administrators to delete inappropriate reviews. Accessible to ADMIN only."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Owner Dashboard (Owner Only)",
+			"item": [
+				{
+					"name": "Get Owner Dashboard Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/dashboard/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"owner",
+								"dashboard",
+								"stats"
+							]
+						},
+						"description": "Returns counts and average calculations for the logged-in owner's business properties."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Owner Dashboard Ratings Table",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/owner/dashboard/ratings?page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"owner",
+								"dashboard",
+								"ratings"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc"
+								}
+							]
+						},
+						"description": "Gets all feedback left on all stores owned by this owner. Sortable and paginated."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Admin Dashboard (Admin Only)",
+			"item": [
+				{
+					"name": "Get Admin Dashboard Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"dashboard"
+							]
+						},
+						"description": "Returns global system counts: total users, total stores, and total ratings."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your-jwt-token-will-be-placed-here",
+			"type": "string"
+		}
+	]
+}
