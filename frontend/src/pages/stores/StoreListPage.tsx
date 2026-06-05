@@ -38,6 +38,9 @@ import { usePermission } from '../../hooks/usePermission';
 export const StoreListPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAdmin, isStoreOwner, isUser } = usePermission();
+  const admin = isAdmin();
+  const storeOwner = isStoreOwner();
+  const userRole = isUser();
 
   // Shared Data States
   const [stores, setStores] = useState<Store[]>([]);
@@ -91,7 +94,7 @@ export const StoreListPage: React.FC = () => {
     setLoading(true);
     setErrorMsg(null);
     try {
-      const isGrid = isAdmin() || isUser() || isStoreOwner();
+      const isGrid = admin || userRole || storeOwner;
       const page = isGrid ? paginationModel.page + 1 : cardPage;
       const limit = isGrid ? paginationModel.pageSize : 6;
       const sortBy = sortModel[0]?.field || 'name';
@@ -118,7 +121,7 @@ export const StoreListPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [isAdmin, isUser, isStoreOwner, cardPage, paginationModel.page, paginationModel.pageSize, sortModel, appliedFilters]);
+  }, [admin, userRole, storeOwner, cardPage, paginationModel.page, paginationModel.pageSize, sortModel, appliedFilters]);
 
   useEffect(() => {
     fetchStores();
@@ -156,10 +159,27 @@ export const StoreListPage: React.FC = () => {
   };
 
   // Trigger delete store dialog
-  const handleDeleteClick = (id: string) => {
+  const handlePaginationModelChange = useCallback((model: GridPaginationModel) => {
+    setPaginationModel((prev) => (
+      prev.page === model.page && prev.pageSize === model.pageSize ? prev : model
+    ));
+  }, []);
+
+  const handleSortModelChange = useCallback((model: GridSortModel) => {
+    setSortModel((prev) => {
+      const prevSort = prev[0];
+      const nextSort = model[0];
+      if (prevSort?.field === nextSort?.field && prevSort?.sort === nextSort?.sort) {
+        return prev;
+      }
+      return model;
+    });
+  }, []);
+
+  const handleDeleteClick = useCallback((id: string) => {
     setDeleteStoreId(id);
     setDeleteConfirmOpen(true);
-  };
+  }, []);
 
   // Confirm delete store API call
   const handleConfirmDelete = async () => {
@@ -183,7 +203,7 @@ export const StoreListPage: React.FC = () => {
   };
 
   // Open rating submission modal
-  const handleOpenRatingDialog = (store: Store) => {
+  const handleOpenRatingDialog = useCallback((store: Store) => {
     setRatingStoreId(store.id);
     setRatingStoreName(store.name);
     if (store.userRating) {
@@ -196,7 +216,7 @@ export const StoreListPage: React.FC = () => {
       setRatingComment('');
     }
     setRatingDialogOpen(true);
-  };
+  }, []);
 
   // Submit Rating API call (Upsert)
   const handleRatingSubmit = async () => {
@@ -246,6 +266,7 @@ export const StoreListPage: React.FC = () => {
         headerName: 'Average Rating',
         flex: 1,
         minWidth: 150,
+        sortable: false,
         renderCell: (params: any) => (
           <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             <StarRating value={params.value} showText />
@@ -254,7 +275,7 @@ export const StoreListPage: React.FC = () => {
       },
     ];
 
-    if (isUser()) {
+    if (userRole) {
       // Regular user sees their own rating column and rating action button
       return [
         ...baseCols,
@@ -315,7 +336,7 @@ export const StoreListPage: React.FC = () => {
       ];
     }
 
-    if (isAdmin()) {
+    if (admin) {
       // Admin sees email, ratings count, date, and admin actions (Delete, View)
       return [
         ...baseCols,
@@ -331,6 +352,7 @@ export const StoreListPage: React.FC = () => {
           type: 'number',
           flex: 0.7,
           minWidth: 100,
+          sortable: false,
           headerAlign: 'left',
           align: 'left',
         },
@@ -396,6 +418,7 @@ export const StoreListPage: React.FC = () => {
         type: 'number',
         flex: 0.7,
         minWidth: 100,
+        sortable: false,
         headerAlign: 'left',
         align: 'left',
       },
@@ -422,9 +445,9 @@ export const StoreListPage: React.FC = () => {
         },
       },
     ];
-  }, [isAdmin, isUser, isStoreOwner, handleOpenRatingDialog, handleDeleteClick, navigate]);
+  }, [admin, userRole, handleOpenRatingDialog, handleDeleteClick, navigate]);
 
-  const showGrid = isAdmin() || isUser() || isStoreOwner();
+  const showGrid = admin || userRole || storeOwner;
 
   return (
     <Box sx={{ py: 1 }}>
@@ -435,12 +458,12 @@ export const StoreListPage: React.FC = () => {
             Registered Stores
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {isAdmin()
+            {admin
               ? `Manage system stores, monitor reviews, and configure locations (${totalRows} total)`
               : `Browse satisfied local businesses, view satisfaction rates, and review them (${totalRows} total)`}
           </Typography>
         </Box>
-        {(isAdmin() || isStoreOwner()) && (
+        {(admin || storeOwner) && (
           <Button
             variant="contained"
             startIcon={<AddHomeWorkIcon />}
@@ -547,9 +570,9 @@ export const StoreListPage: React.FC = () => {
               paginationMode="server"
               sortingMode="server"
               paginationModel={paginationModel}
-              onPaginationModelChange={setPaginationModel}
+              onPaginationModelChange={handlePaginationModelChange}
               sortModel={sortModel}
-              onSortModelChange={setSortModel}
+              onSortModelChange={handleSortModelChange}
               pageSizeOptions={[5, 10, 20, 50]}
               getRowHeight={() => 'auto'}
               sx={{

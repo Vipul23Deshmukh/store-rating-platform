@@ -20,12 +20,12 @@ export const ratingService = {
   /** Get all ratings for a store. */
   listByStore: async (storeId: string): Promise<Rating[]> => {
     const response = await api.get<Rating[]>(`/ratings/store/${storeId}`);
-    return response.data;
+    return Array.isArray(response.data) ? response.data : [];
   },
 
   /** Get the current user's rating for a specific store. */
   getMyRating: async (storeId: string): Promise<Rating | null> => {
     const response = await api.get<Rating | null>(`/ratings/my-rating/${storeId}`);
-    return response.data;
+    return response.data ?? null;
   },
 };

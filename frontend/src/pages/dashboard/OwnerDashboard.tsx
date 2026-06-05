@@ -100,81 +100,95 @@ export const OwnerDashboard: React.FC = () => {
     fetchRatings();
   }, [fetchRatings]);
 
-  // Define Columns for MUI DataGrid
-  const columns = useMemo<GridColDef<OwnerRatingItem>[]>(() => [
-    {
-      field: 'userName',
-      headerName: 'User Name',
-      flex: 1,
-      minWidth: 140,
-      valueGetter: (_value, row) => row.user.name,
-      renderCell: (params: any) => (
-        <Typography variant="body2" sx={{ fontWeight: 600, py: 1 }}>
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: 'userEmail',
-      headerName: 'User Email',
-      flex: 1.2,
-      minWidth: 180,
-      valueGetter: (_value, row) => row.user.email,
-    },
-    {
-      field: 'storeName',
-      headerName: 'Store Name',
-      flex: 1,
-      minWidth: 150,
-      valueGetter: (_value, row) => row.store.name,
-    },
-    {
-      field: 'value',
-      headerName: 'Rating',
-      flex: 0.9,
-      minWidth: 140,
-      renderCell: (params: any) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          <StarRating value={params.value} showText />
-        </Box>
-      ),
-    },
-    {
-      field: 'createdAt',
-      headerName: 'Date Submitted',
-      flex: 0.9,
-      minWidth: 130,
-      valueFormatter: (value: any) => {
-        if (!value) return '';
-        return new Date(value).toLocaleDateString(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        });
+  const handlePaginationModelChange = useCallback((model: GridPaginationModel) => {
+    setPaginationModel((prev) => (
+      prev.page === model.page && prev.pageSize === model.pageSize ? prev : model
+    ));
+  }, []);
+
+  const handleSortModelChange = useCallback((model: GridSortModel) => {
+    setSortModel((prev) => {
+      const prevSort = prev[0];
+      const nextSort = model[0];
+      if (prevSort?.field === nextSort?.field && prevSort?.sort === nextSort?.sort) {
+        return prev;
+      }
+      return model;
+    });
+  }, []);
+
+  const columns = useMemo<GridColDef<OwnerRatingItem>[]>(() => {
+    return [
+      {
+        field: 'userName',
+        headerName: 'User Name',
+        flex: 1,
+        minWidth: 140,
+        valueGetter: (_value, row) => row?.user?.name ?? 'Unknown user',
+        renderCell: (params: any) => (
+          <Typography variant="body2" sx={{ fontWeight: 600, py: 1 }}>
+            {params.value ?? 'Unknown user'}
+          </Typography>
+        ),
       },
-    },
-    {
-      field: 'comment',
-      headerName: 'Customer Feedback',
-      flex: 1.5,
-      minWidth: 220,
-      renderCell: (params: any) => {
-        const comment = params.value;
-        if (!comment) {
+      {
+        field: 'userEmail',
+        headerName: 'User Email',
+        flex: 1.2,
+        minWidth: 180,
+        valueGetter: (_value, row) => row?.user?.email ?? '',
+      },
+      {
+        field: 'storeName',
+        headerName: 'Store Name',
+        flex: 1,
+        minWidth: 150,
+        valueGetter: (_value, row) => row?.store?.name ?? 'Unknown store',
+      },
+      {
+        field: 'value',
+        headerName: 'Rating',
+        flex: 0.9,
+        minWidth: 140,
+        renderCell: (params: any) => (
+          <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+            <StarRating value={typeof params.value === 'number' ? params.value : 0} showText />
+          </Box>
+        ),
+      },
+      {
+        field: 'createdAt',
+        headerName: 'Date Submitted',
+        flex: 0.9,
+        minWidth: 130,
+        valueFormatter: (value: any) => {
+          if (!value) return '';
+          return new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        },
+      },
+      {
+        field: 'comment',
+        headerName: 'Customer Feedback',
+        flex: 1.5,
+        minWidth: 220,
+        renderCell: (params: any) => {
+          const comment = params.value;
+          if (!comment) {
+            return (
+              <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic', py: 1 }}>
+                No comment left
+              </Typography>
+            );
+          }
           return (
-            <Typography variant="caption" color="text.disabled" sx={{ fontStyle: 'italic', py: 1 }}>
-              No comment left
+            <Typography variant="body2" sx={{ py: 1, whiteSpace: 'normal', wordBreak: 'break-word' }}>
+              {comment}
             </Typography>
           );
-        }
-        return (
-          <Typography variant="body2" sx={{ py: 1, whiteSpace: 'normal', wordBreak: 'break-word' }}>
-            {comment}
-          </Typography>
-        );
+        },
       },
-    },
-  ], []);
+    ];
+  }, []);
 
   return (
     <Box sx={{ py: 1 }}>
@@ -332,9 +346,9 @@ export const OwnerDashboard: React.FC = () => {
             paginationMode="server"
             sortingMode="server"
             paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
+            onPaginationModelChange={handlePaginationModelChange}
             sortModel={sortModel}
-            onSortModelChange={setSortModel}
+            onSortModelChange={handleSortModelChange}
             pageSizeOptions={[5, 10, 20, 50]}
             getRowHeight={() => 'auto'}
             sx={{

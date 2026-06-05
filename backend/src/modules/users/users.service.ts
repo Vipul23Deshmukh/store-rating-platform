@@ -51,7 +51,8 @@ export class UsersService {
       ];
     }
 
-    const sortBy = query.sortBy || 'createdAt';
+    const sortableFields = new Set(['name', 'email', 'address', 'role', 'createdAt', 'updatedAt']);
+    const sortBy = sortableFields.has(query.sortBy ?? '') ? query.sortBy! : 'createdAt';
     const sortOrder = query.sortOrder || 'desc';
 
     const [total, users] = await Promise.all([

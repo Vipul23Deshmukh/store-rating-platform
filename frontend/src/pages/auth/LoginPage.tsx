@@ -111,7 +111,7 @@ export const LoginPage: React.FC = () => {
             align="center"
             sx={{
               fontWeight: 800,
-              color: '#fff',
+              color: '#000000',
               mb: 0.5,
               letterSpacing: '-0.02em',
             }}
@@ -121,7 +121,7 @@ export const LoginPage: React.FC = () => {
           <Typography
             variant="body2"
             align="center"
-            sx={{ color: 'rgba(255,255,255,0.55)', mb: 4 }}
+            sx={{ color: 'rgba(0, 0, 0, 0.55)', mb: 4 }}
           >
             Sign in to the Store Rating Platform
           </Typography>
@@ -156,7 +156,7 @@ export const LoginPage: React.FC = () => {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <EmailIcon sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 20 }} />
+                      <EmailIcon sx={{ color: '#4b5563', fontSize: 20 }} />
                     </InputAdornment>
                   ),
                 },
@@ -183,7 +183,7 @@ export const LoginPage: React.FC = () => {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <LockIcon sx={{ color: 'rgba(255,255,255,0.4)', fontSize: 20 }} />
+                      <LockIcon sx={{ color: '#4b5563', fontSize: 20 }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -192,7 +192,7 @@ export const LoginPage: React.FC = () => {
                         onClick={() => setShowPassword(!showPassword)}
                         edge="end"
                         size="small"
-                        sx={{ color: 'rgba(255,255,255,0.4)' }}
+                        sx={{ color: '#4b5563' }}
                       >
                         {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                       </IconButton>
@@ -240,7 +240,7 @@ export const LoginPage: React.FC = () => {
             </Button>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-              <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+              <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
                 Don't have an account?{' '}
                 <Link
                   component={RouterLink}

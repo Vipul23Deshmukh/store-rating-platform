@@ -23,6 +23,16 @@ export class OwnerController {
   constructor(private readonly ownerService: OwnerService) {}
 
   /**
+   * GET /api/owner/dashboard
+   *
+   * Compatibility endpoint for owner dashboard summary metrics.
+   */
+  @Get('dashboard')
+  async getDashboard(@CurrentUser('id') ownerId: string) {
+    return this.ownerService.getDashboardStats(ownerId);
+  }
+
+  /**
    * GET /api/owner/dashboard/stats
    *
    * Returns aggregate metrics for the authenticated owner:

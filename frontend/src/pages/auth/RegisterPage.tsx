@@ -167,14 +167,14 @@ export const RegisterPage: React.FC = () => {
             component="h1"
             variant="h4"
             align="center"
-            sx={{ fontWeight: 800, color: '#fff', mb: 0.5, letterSpacing: '-0.02em' }}
+            sx={{ fontWeight: 800, color: '#000000', mb: 0.5, letterSpacing: '-0.02em' }}
           >
             Create Account
           </Typography>
           <Typography
             variant="body2"
             align="center"
-            sx={{ color: 'rgba(255,255,255,0.55)', mb: 4 }}
+            sx={{ color: 'rgba(0, 0, 0, 0.55)', mb: 4 }}
           >
             Join the Store Rating Platform today
           </Typography>
@@ -432,7 +432,7 @@ export const RegisterPage: React.FC = () => {
             </Button>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-              <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+              <Typography variant="body2" sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
                 Already have an account?{' '}
                 <Link
                   component={RouterLink}

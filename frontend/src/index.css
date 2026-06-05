@@ -133,41 +133,63 @@ body {
 
 /* ─── Auth Form Fields (dark theme override for inputs on auth pages) ────── */
 .auth-card .MuiOutlinedInput-root {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.92);
   border-radius: 12px;
   transition: all 0.2s ease;
 }
 
 .auth-card .MuiOutlinedInput-root:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.98);
 }
 
 .auth-card .MuiOutlinedInput-root.Mui-focused {
-  background: rgba(255, 255, 255, 0.25);
+  background: #ffffff;
 }
 
 .auth-card .MuiOutlinedInput-notchedOutline {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(17, 24, 39, 0.18);
 }
 
 .auth-card .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-  border-color: rgba(255, 255, 255, 0.24);
+  border-color: rgba(99, 102, 241, 0.55);
 }
 
 .auth-card .MuiInputLabel-root {
-  color: rgba(255, 255, 255, 0.55);
+  color: #374151;
+}
+
+.auth-card .MuiInputLabel-root.Mui-focused {
+  color: #4f46e5;
 }
 
 .auth-card .MuiInputBase-input {
-  color: rgba(255, 255, 255, 0.92);
+  color: #111827;
+}
+
+.auth-card .MuiInputBase-input::placeholder {
+  color: #6b7280;
+  opacity: 1;
+}
+
+.auth-card .MuiInputAdornment-root .MuiSvgIcon-root,
+.auth-card .MuiIconButton-root {
+  color: #4b5563;
 }
 
 .auth-card .MuiFormHelperText-root {
-  color: rgba(255, 255, 255, 0.45);
+  color: #4b5563;
 }
 
 .auth-card .MuiSelect-icon {
-  color: rgba(255, 255, 255, 0.55);
+  color: #4b5563;
+}
+
+.auth-card input:-webkit-autofill,
+.auth-card input:-webkit-autofill:hover,
+.auth-card input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #111827;
+  box-shadow: 0 0 0 100px #ffffff inset;
+  transition: background-color 9999s ease-out;
 }
 
 /* ─── Fade In Animation ───────────────────────────────────────────────────── */

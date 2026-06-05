@@ -93,6 +93,23 @@ export const UserListPage: React.FC = () => {
     fetchUsers();
   }, [fetchUsers]);
 
+  const handlePaginationModelChange = useCallback((model: GridPaginationModel) => {
+    setPaginationModel((prev) => (
+      prev.page === model.page && prev.pageSize === model.pageSize ? prev : model
+    ));
+  }, []);
+
+  const handleSortModelChange = useCallback((model: GridSortModel) => {
+    setSortModel((prev) => {
+      const prevSort = prev[0];
+      const nextSort = model[0];
+      if (prevSort?.field === nextSort?.field && prevSort?.sort === nextSort?.sort) {
+        return prev;
+      }
+      return model;
+    });
+  }, []);
+
   // Handle Search Submit
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,10 +132,10 @@ export const UserListPage: React.FC = () => {
   };
 
   // Trigger delete dialog
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = useCallback((id: string) => {
     setDeleteUserId(id);
     setDeleteConfirmOpen(true);
-  };
+  }, []);
 
   // Confirm delete API call
   const handleConfirmDelete = async () => {
@@ -233,7 +250,7 @@ export const UserListPage: React.FC = () => {
         );
       },
     },
-  ], [navigate]);
+  ], [navigate, handleDeleteClick]);
 
   return (
     <Box sx={{ py: 1 }}>
@@ -337,9 +354,9 @@ export const UserListPage: React.FC = () => {
             paginationMode="server"
             sortingMode="server"
             paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
+            onPaginationModelChange={handlePaginationModelChange}
             sortModel={sortModel}
-            onSortModelChange={setSortModel}
+            onSortModelChange={handleSortModelChange}
             pageSizeOptions={[5, 10, 20, 50]}
             getRowHeight={() => 'auto'}
             sx={{

@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           console.error('Failed to restore auth session:', error);
           localStorage.removeItem('token');
           setToken(null);
+          setUser(null);
         }
       }
       setIsLoading(false);
@@ -44,6 +45,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(true);
     try {
       const response = await authService.login(credentials);
+      if (!response?.accessToken || !response?.user) {
+        throw new Error('Invalid login response');
+      }
       localStorage.setItem('token', response.accessToken);
       setToken(response.accessToken);
       setUser(response.user);
@@ -56,6 +60,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(true);
     try {
       const response = await authService.register(data);
+      if (!response?.accessToken || !response?.user) {
+        throw new Error('Invalid registration response');
+      }
       localStorage.setItem('token', response.accessToken);
       setToken(response.accessToken);
       setUser(response.user);
@@ -79,7 +86,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       value={{
         user,
         token,
-        isAuthenticated: !!token,
+        isAuthenticated: !!token && !!user,
         isLoading,
         login,
         register,

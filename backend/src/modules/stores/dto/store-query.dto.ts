@@ -27,7 +27,7 @@ export class StoreQueryDto {
   address?: string;
 
   @IsOptional()
-  @IsString()
+  @IsIn(['name', 'email', 'address', 'createdAt', 'updatedAt'])
   sortBy?: string;
 
   @IsOptional()

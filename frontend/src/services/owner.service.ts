@@ -18,12 +18,12 @@ export interface OwnerRatingItem {
   value: number;
   comment: string | null;
   createdAt: string;
-  user: {
+  user?: {
     id: string;
     name: string;
     email: string;
   };
-  store: {
+  store?: {
     id: string;
     name: string;
   };
@@ -42,7 +42,12 @@ export interface OwnerRatingsResponse {
 export const ownerService = {
   getStats: async (): Promise<OwnerStats> => {
     const response = await api.get<OwnerStats>('/owner/dashboard/stats');
-    return response.data;
+    const data = response.data as Partial<OwnerStats> | undefined;
+    return {
+      totalStores: typeof data?.totalStores === 'number' ? data.totalStores : 0,
+      totalRatings: typeof data?.totalRatings === 'number' ? data.totalRatings : 0,
+      averageRating: typeof data?.averageRating === 'number' ? data.averageRating : 0,
+    };
   },
 
   getRatings: async (params?: OwnerRatingsQueryParams): Promise<OwnerRatingsResponse> => {

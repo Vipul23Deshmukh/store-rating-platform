@@ -5,7 +5,7 @@ export const userService = {
   list: async (params?: UserQueryParams): Promise<UserListResponse> => {
     const response = await api.get<UserListResponse>('/users', { params });
     const data = response.data as any;
-    const users = Array.isArray(data?.users) ? data.users : [];
+    const users = Array.isArray(data?.users) ? data.users : Array.isArray(data) ? data : [];
     let meta = { total: 0, page: 1, limit: 10, totalPages: 1 };
     if (data?.meta) {
       meta = {

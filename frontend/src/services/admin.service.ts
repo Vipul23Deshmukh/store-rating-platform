@@ -9,7 +9,12 @@ export interface AdminStats {
 export const adminService = {
   getStats: async (): Promise<AdminStats> => {
     const response = await api.get<AdminStats>('/admin/dashboard');
-    return response.data;
+    const data = response.data as Partial<AdminStats> | undefined;
+    return {
+      totalUsers: typeof data?.totalUsers === 'number' ? data.totalUsers : 0,
+      totalStores: typeof data?.totalStores === 'number' ? data.totalStores : 0,
+      totalRatings: typeof data?.totalRatings === 'number' ? data.totalRatings : 0,
+    };
   },
 };
 

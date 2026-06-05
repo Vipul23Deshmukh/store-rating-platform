@@ -71,14 +71,22 @@ export const StoreDetailPage: React.FC = () => {
     setLoading(true);
     try {
       const data = await storeService.get(id);
-      setStore(data as DetailStore);
+      const detailData = data as Partial<DetailStore>;
+      const safeStore = {
+        ...detailData,
+        averageRating: typeof detailData?.averageRating === 'number' ? detailData.averageRating : 0,
+        ratingCount: typeof detailData?.ratingCount === 'number' ? detailData.ratingCount : 0,
+        userRating: detailData?.userRating ?? null,
+        ratings: Array.isArray(detailData?.ratings) ? detailData.ratings : [],
+      } as DetailStore;
+      setStore(safeStore);
 
       // Pre-fill dialog with existing rating if any
-      if (data?.userRating) {
-        setRatingValue(data.userRating.value);
+      if (safeStore.userRating) {
+        setRatingValue(safeStore.userRating.value);
         // Find rating details in the list to fetch comment
-        const currentRating = Array.isArray((data as DetailStore)?.ratings)
-          ? (data as DetailStore).ratings.find((r) => r.user?.id === user?.id)
+        const currentRating = Array.isArray(safeStore.ratings)
+          ? safeStore.ratings.find((r) => r.user?.id === user?.id)
           : undefined;
         setRatingComment(currentRating?.comment || '');
       } else {
@@ -242,7 +250,7 @@ export const StoreDetailPage: React.FC = () => {
                 <Paper key={review.id} sx={{ p: 3, borderRadius: 2 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1, mb: 1 }}>
                     <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                      {review.user.name} {review.user.id === user?.id && '(You)'}
+                      {review.user?.name ?? 'Unknown user'} {review.user?.id === user?.id && '(You)'}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {new Date(review.createdAt).toLocaleDateString()}
@@ -334,4 +342,3 @@ export const StoreDetailPage: React.FC = () => {
 };
 
 export default StoreDetailPage;
-

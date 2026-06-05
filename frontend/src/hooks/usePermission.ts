@@ -1,31 +1,32 @@
+import { useCallback, useMemo } from 'react';
 import { useAuth } from './useAuth';
 import { Role } from '../types';
 
 export const usePermission = () => {
   const { user } = useAuth();
 
-  const hasRole = (roles: Role[]) => {
+  const hasRole = useCallback((roles: Role[]) => {
     if (!user) return false;
     return roles.includes(user.role);
-  };
+  }, [user]);
 
-  const isAdmin = () => {
+  const isAdmin = useCallback(() => {
     return user?.role === Role.ADMIN;
-  };
+  }, [user?.role]);
 
-  const isStoreOwner = () => {
+  const isStoreOwner = useCallback(() => {
     return user?.role === Role.STORE_OWNER;
-  };
+  }, [user?.role]);
 
-  const isUser = () => {
+  const isUser = useCallback(() => {
     return user?.role === Role.USER;
-  };
+  }, [user?.role]);
 
-  return {
+  return useMemo(() => ({
     hasRole,
     isAdmin,
     isStoreOwner,
     isUser,
     role: user?.role || null,
-  };
+  }), [hasRole, isAdmin, isStoreOwner, isUser, user?.role]);
 };

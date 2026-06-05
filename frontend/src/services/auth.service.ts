@@ -15,6 +15,9 @@ export const authService = {
   getCurrentUser: async (token?: string): Promise<AuthUser> => {
     const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
     const response = await api.get<AuthUser>('/auth/me', { headers });
+    if (!response.data) {
+      throw new Error('Invalid current user response');
+    }
     return response.data;
   },
 
@@ -28,4 +31,3 @@ export const authService = {
     return response.data;
   },
 };
-

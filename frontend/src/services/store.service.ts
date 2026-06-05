@@ -15,7 +15,7 @@ export const storeService = {
   list: async (params?: StoreQueryParams): Promise<StoreListResponse> => {
     const response = await api.get<StoreListResponse>('/stores', { params });
     const data = response.data as any;
-    const stores = Array.isArray(data?.stores) ? data.stores : [];
+    const stores = Array.isArray(data?.stores) ? data.stores : Array.isArray(data) ? data : [];
     let meta = { total: 0, page: 1, limit: 10, totalPages: 1 };
     if (data?.meta) {
       meta = {
