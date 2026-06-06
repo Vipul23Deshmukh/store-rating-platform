@@ -43,24 +43,24 @@ https://store-rating-api-cq0y.onrender.com/api/health
 ### 🔐 Authentication
 
 #### Login Page
-![Login Page](images/login.png)
+![Login Page](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/login.png.png)
 
 ---
 
 ### 👨‍💼 Administrator Module
 
 #### Admin Dashboard
-![Admin Dashboard](screenshots/admin_dashboard.png)
+![Admin Dashboard](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/admin_dashboard.png.png)
 
 #### User Management
-![User Management](screenshots/user_management.png)
+![User Management]([screenshots/user_management.png](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/user_management.png.png))
 
 ---
 
 ### 👤 User Module
 
 #### Submit Rating
-![Submit Rating](screenshots/submit_rating.png)
+![Submit Rating](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/submit_rating.png.png)
 
 #### Customer Reviews
 ![Customer Reviews](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/c6e3c4da4c5aa021d385fad641db4f5c5b8d0209/images/Customer_review.png.png)
@@ -70,10 +70,9 @@ https://store-rating-api-cq0y.onrender.com/api/health
 ### 🏪 Store Owner Module
 
 #### Store Owner Dashboard
-![Store Owner Dashboard](screenshots/store_owner_dashboard.png)
+![Store Owner Dashboard](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/store_owner_dashboard.png.png)
 
-#### Store Profile & Reviews
-![Store Profile](screenshots/store_profile.png)
+
 
 ---
 
