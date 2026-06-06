@@ -63,7 +63,7 @@ https://store-rating-api-cq0y.onrender.com/api/health
 ![Submit Rating](screenshots/submit_rating.png)
 
 #### Customer Reviews
-![Customer Reviews](screenshots/Customer_review.png)
+![Customer Reviews](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/c6e3c4da4c5aa021d385fad641db4f5c5b8d0209/images/Customer_review.png.png)
 
 ---
 
