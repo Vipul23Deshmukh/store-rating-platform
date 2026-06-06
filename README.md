@@ -43,7 +43,7 @@ https://store-rating-api-cq0y.onrender.com/api/health
 ### 🔐 Authentication
 
 #### Login Page
-![Login Page](screenshots/login.png)
+![Login Page](images/login.png)
 
 ---
 
