@@ -38,6 +38,45 @@ https://store-rating-api-cq0y.onrender.com/api
 https://store-rating-api-cq0y.onrender.com/api/health
 
 ---
+## 📸 Application Screenshots
+
+### 🔐 Authentication
+
+#### Login Page
+![Login Page](screenshots/login.png)
+
+---
+
+### 👨‍💼 Administrator Module
+
+#### Admin Dashboard
+![Admin Dashboard](screenshots/admin_dashboard.png)
+
+#### User Management
+![User Management](screenshots/user_management.png)
+
+---
+
+### 👤 User Module
+
+#### Submit Rating
+![Submit Rating](screenshots/submit_rating.png)
+
+#### Customer Reviews
+![Customer Reviews](screenshots/Customer_review.png)
+
+---
+
+### 🏪 Store Owner Module
+
+#### Store Owner Dashboard
+![Store Owner Dashboard](screenshots/store_owner_dashboard.png)
+
+#### Store Profile & Reviews
+![Store Profile](screenshots/store_profile.png)
+
+---
+
 
 
 ## 🏛️ System Architecture
