@@ -19,7 +19,6 @@ An enterprise-grade, full-stack **Store Rating Platform** designed for business 
 * [Database Schema (ERD)](#️-database-schema-erd)
 * [Production Deployment](#️-production-deployment)
 * [Repository Structure](#-repository-structure)
-* [Submission Checklist](#-submission-checklist)
 * [License](#-license)
 ---
 
@@ -469,28 +468,7 @@ Roxiler_Coding_Challenge/
 └── README.md                     # This file
 ```
 
----
 
-## ✅ Submission Checklist
-
-- [x] All three roles implemented (Admin, Store Owner, Normal User)
-- [x] JWT authentication with role-based route guards
-- [x] User CRUD (Admin), Store CRUD, Rating upsert
-- [x] Admin dashboard with global stats
-- [x] Store Owner dashboard with ratings feed
-- [x] Profile self-management (name, email, address)
-- [x] Password change with strength validation
-- [x] Pagination, sorting, and search on all list views
-- [x] Database schema with proper constraints and cascading deletes
-- [x] Seed script with realistic test data
-- [x] Postman collection with auto-token extraction
-- [x] Render deployment config (`render.yaml`)
-- [x] Vercel deployment config (`vercel.json`)
-- [x] Production `.env.example` files for both backend and frontend
-- [x] Comprehensive audit documentation
-- [x] Clean, documented, production-ready codebase
-
----
 
 ## 📄 License
 
