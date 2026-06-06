@@ -4,6 +4,42 @@ An enterprise-grade, full-stack **Store Rating Platform** designed for business 
 
 ---
 
+# 📑 Table of Contents
+
+* [Live Application](#-live-application)
+* [System Architecture](#️-system-architecture)
+* [Technology Stack & Design Rationale](#️-technology-stack--design-rationale)
+* [Roles & Capabilities Matrix](#-roles--capabilities-matrix)
+* [Design Decisions & How We Did It](#️-design-decisions--how-we-did-it)
+* [Comprehensive API Endpoint Documentation](#-comprehensive-api-endpoint-documentation)
+* [Step-by-Step Installation & Running Guide](#️-step-by-step-installation--running-guide)
+* [Seeding & Test Credentials](#-seeding--test-credentials)
+* [API Integration Testing](#-api-integration-testing)
+* [Code Audit & Quality Documentation](#-code-audit--quality-documentation)
+* [Database Schema (ERD)](#️-database-schema-erd)
+* [Production Deployment](#️-production-deployment)
+* [Repository Structure](#-repository-structure)
+* [Submission Checklist](#-submission-checklist)
+* [License](#-license)
+---
+
+## 🚀 Live Application
+
+### Frontend (Vercel)
+
+https://store-rating-platform-drab.vercel.app
+
+### Backend API (Render)
+
+https://store-rating-api-cq0y.onrender.com/api
+
+### Health Check
+
+https://store-rating-api-cq0y.onrender.com/api/health
+
+---
+
+
 ## 🏛️ System Architecture
 
 The platform separates frontend user experience, backend logic, and database state into three decoupled layers:
@@ -166,11 +202,14 @@ All requests (except registration and login) must include `Authorization: Bearer
 
 ## 🛠️ Step-by-Step Installation & Running Guide
 
-### 1. Launch the Database Container
-Spin up the pre-configured PostgreSQL server using Docker:
-```bash
-docker-compose up -d
-```
+### 1. Configure PostgreSQL Database
+
+Install PostgreSQL locally and create a database named:
+
+store_rating_db
+
+Update the backend .env file with your PostgreSQL connection string.
+
 
 ### 2. Configure & Start the Backend API
 Navigate to the backend, set environment variables, run migrations, and run seed data:
@@ -289,7 +328,7 @@ erDiagram
 
 ---
 
-## ☁️ Production Deployment Guide
+## ☁️ Production Deployment 
 
 ### Deploy Backend on Render
 
@@ -383,10 +422,9 @@ Roxiler_Coding_Challenge/
 │   ├── missing_features.md       # Requirement coverage & bug fixes
 │   ├── security_improvements.md  # Security hardening recommendations
 │   ├── performance_improvements.md # Database indexing & query optimizations
-│   ├── deployment_instructions.md  # Docker & AWS deployment guide
+│   ├── deployment_instructions.md  # Render & Vercel deployment guide
 │   └── devops_fullstack_audit.md   # Senior DevOps audit & troubleshooting
 ├── render.yaml                   # Render Infrastructure-as-Code blueprint
-├── docker-compose.yml            # Local PostgreSQL container
 ├── postman_collection.json       # Postman API testing collection
 └── README.md                     # This file
 ```
