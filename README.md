@@ -44,6 +44,8 @@ https://store-rating-api-cq0y.onrender.com/api/health
 
 #### Login Page
 ![Login Page](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/login.png.png)
+#### Signup Page
+![Signup Page](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/4a4614ad336825421dae8963d5838fe872d1bfaa/images/Signup.png.png)
 
 ---
 
@@ -53,7 +55,7 @@ https://store-rating-api-cq0y.onrender.com/api/health
 ![Admin Dashboard](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/admin_dashboard.png.png)
 
 #### User Management
-![User Management]([screenshots/user_management.png](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/890242f7042c75cea5957b3fe667bc848eb0ad85/images/user_management.png.png))
+![User Management](https://github.com/Vipul23Deshmukh/store-rating-platform/blob/4a4614ad336825421dae8963d5838fe872d1bfaa/images/user_management.png.png)
 
 ---
 
